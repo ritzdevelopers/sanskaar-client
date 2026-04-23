@@ -3,7 +3,8 @@
 //     process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "")) ||
 //   "https://sanskar-backend-7xrl.onrender.com";
 
-export const API_BASE = "http://localhost:3001";
+// export const API_BASE = "http://localhost:3001"; 
+export const API_BASE = "https://sanskaar-server.onrender.com";
 
 
 /** Strip HTML tags for excerpts, previews, and meta text (blog body is HTML). */
