@@ -45,6 +45,116 @@ const PROJECT_OPTIONS = [
 
 const ENQUIRE_API_PATH = "/api/enquire";
 
+const FOURQT_WEB_CREATE_URL = "https://eternia04.4erealty.com/WebCreate.aspx";
+const FOURQT_UID = "fourqt";
+const FOURQT_PWD = "wn9mxO76f34=";
+
+function fourQtUrlHostPath(href: string): string {
+  try {
+    const u = new URL(href);
+    return `${u.host}${u.pathname}`;
+  } catch {
+    return "";
+  }
+}
+
+function normalizeIndianMobileDigits(value: string): string {
+  let d = value.replace(/\D/g, "");
+  if (d.length === 12 && d.startsWith("91")) d = d.slice(2);
+  if (d.length === 11 && d.startsWith("0")) d = d.slice(1);
+  return d;
+}
+
+/** Align with enquiry / projects brochure CRM labels. */
+function normalizeProjectForFourQt(project: string): string {
+  const raw = String(project ?? "").trim().toLowerCase();
+  if (raw.includes("eternia")) return "Eternia Sanskar";
+  if (
+    raw.includes("high life") ||
+    raw.includes("high-life") ||
+    raw.includes("highlife")
+  ) {
+    return "High Life Sanskar";
+  }
+  if (
+    raw.includes("forest walk") ||
+    raw.includes("forest-walk") ||
+    raw.includes("forestwalk")
+  ) {
+    return "Forest Walk Sanskar";
+  }
+  const t = String(project ?? "").trim();
+  return t || "Sanskar Website";
+}
+
+async function submitSiteVisitLeadToFourQt({
+  name,
+  email,
+  mobileDigits,
+  visitDate,
+  timeSlotLabel: slotLbl,
+  project,
+  notes,
+}: {
+  name: string;
+  email: string;
+  mobileDigits: string;
+  visitDate: string;
+  timeSlotLabel: string;
+  project: string;
+  notes: string;
+}): Promise<void> {
+  const href = typeof window !== "undefined" ? window.location.href : "";
+  const query =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search)
+      : new URLSearchParams();
+  const projectLabel = normalizeProjectForFourQt(project);
+  const notesTrim = notes.trim();
+  const notesShort =
+    notesTrim.length > 160 ? `${notesTrim.slice(0, 160)}…` : notesTrim;
+  const remark = [
+    `Site visit — ${visitDate}, ${slotLbl}`,
+    `Project: ${projectLabel}`,
+    notesShort ? `Notes: ${notesShort}` : null,
+  ]
+    .filter(Boolean)
+    .join(". ");
+  const remarkCapped =
+    remark.length > 480 ? `${remark.slice(0, 477)}…` : remark;
+
+  const requestParams = new URLSearchParams({
+    UID: FOURQT_UID,
+    PWD: FOURQT_PWD,
+    Channel: "MS",
+    Src: "Sanskar Website",
+    ISD: "91",
+    Mob: mobileDigits,
+    Email: email,
+    name,
+    City: "",
+    Location: "Sanskar Website",
+    Project: projectLabel,
+    Remark: remarkCapped,
+    url: fourQtUrlHostPath(href),
+    UniqueId: String(Date.now()),
+    fld1: query.get("utm_source") ?? "",
+    fld2: query.get("utm_campaign") ?? "",
+    fld3: query.get("utm_medium") ?? "",
+    fld4: query.get("utm_keyword") ?? query.get("utm_term") ?? "",
+  });
+  const leadRes = await fetch(
+    `${FOURQT_WEB_CREATE_URL}?${requestParams.toString()}`,
+    {
+      method: "GET",
+      cache: "no-store",
+    },
+  );
+  if (!leadRes.ok) {
+    throw new Error(`4QT lead API failed (${leadRes.status}).`);
+  }
+}
+
 function timeSlotLabel(value: string): string {
   const opt = TIME_SLOT_OPTIONS.find((o) => o.value === value);
   return opt?.label ?? value;
@@ -301,6 +411,16 @@ export function SiteVisitModalProvider({
                         "Apps Script: add doGet + doPost and redeploy Web app.",
                       );
                     }
+
+                    void submitSiteVisitLeadToFourQt({
+                      name,
+                      email,
+                      mobileDigits: normalizeIndianMobileDigits(mobile),
+                      visitDate,
+                      timeSlotLabel: slotLabel,
+                      project,
+                      notes,
+                    }).catch(() => {});
 
                     setSubmitBanner({
                       type: "success",

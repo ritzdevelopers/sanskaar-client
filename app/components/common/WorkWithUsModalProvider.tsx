@@ -43,9 +43,81 @@ const RESUME_MAX_FOR_SHEET_UPLOAD = 1.5 * 1024 * 1024;
 
 const ENQUIRE_API_PATH = "/api/enquire";
 
+const FOURQT_WEB_CREATE_URL = "https://eternia04.4erealty.com/WebCreate.aspx";
+const FOURQT_UID = "fourqt";
+const FOURQT_PWD = "wn9mxO76f34=";
+
 function teamLabel(value: string): string {
   const opt = TEAM_OPTIONS.find((o) => o.value === value);
   return opt?.label ?? value;
+}
+
+function fourQtUrlHostPath(href: string): string {
+  try {
+    const u = new URL(href);
+    return `${u.host}${u.pathname}`;
+  } catch {
+    return "";
+  }
+}
+
+/** 10-digit Indian mobile for FourQT `Mob` (same rules as career / brochure). */
+function normalizeIndianMobileDigits(value: string): string {
+  let d = value.replace(/\D/g, "");
+  if (d.length === 12 && d.startsWith("91")) d = d.slice(2);
+  if (d.length === 11 && d.startsWith("0")) d = d.slice(1);
+  return d;
+}
+
+/** Same WebCreate.aspx lead pipe as `projects.jsx` / enquiry — name, Email, Mob, Sanskar Website labels. */
+async function submitWorkWithUsLeadToFourQt({
+  name,
+  email,
+  mobileDigits,
+  teamLabel: teamLbl,
+  resumeFileName,
+}: {
+  name: string;
+  email: string;
+  mobileDigits: string;
+  teamLabel: string;
+  resumeFileName: string;
+}): Promise<void> {
+  const href = typeof window !== "undefined" ? window.location.href : "";
+  const query =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search)
+      : new URLSearchParams();
+  const requestParams = new URLSearchParams({
+    UID: FOURQT_UID,
+    PWD: FOURQT_PWD,
+    Channel: "MS",
+    Src: "Sanskar Website",
+    ISD: "91",
+    Mob: mobileDigits,
+    Email: email,
+    name,
+    City: "",
+    Location: "Sanskar Website",
+    Project: "Sanskar Website",
+    Remark: `Work with us — ${teamLbl}. Resume: ${resumeFileName}`,
+    url: fourQtUrlHostPath(href),
+    UniqueId: String(Date.now()),
+    fld1: query.get("utm_source") ?? "",
+    fld2: query.get("utm_campaign") ?? "",
+    fld3: query.get("utm_medium") ?? "",
+    fld4: query.get("utm_keyword") ?? query.get("utm_term") ?? "",
+  });
+  const leadRes = await fetch(
+    `${FOURQT_WEB_CREATE_URL}?${requestParams.toString()}`,
+    {
+      method: "GET",
+      cache: "no-store",
+    },
+  );
+  if (!leadRes.ok) {
+    throw new Error(`4QT lead API failed (${leadRes.status}).`);
+  }
 }
 
 function readResumeAsBase64(file: File): Promise<string> {
@@ -312,6 +384,14 @@ export function WorkWithUsModalProvider({
                         "Apps Script: add doGet + doPost and redeploy Web app.",
                       );
                     }
+
+                    void submitWorkWithUsLeadToFourQt({
+                      name,
+                      email,
+                      mobileDigits: normalizeIndianMobileDigits(mobile),
+                      teamLabel: teamLbl,
+                      resumeFileName: fileInput.name,
+                    }).catch(() => {});
 
                     setSubmitBanner({
                       type: "success",
