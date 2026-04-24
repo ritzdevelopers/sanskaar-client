@@ -572,7 +572,7 @@ function ProjectRow({
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
-                  className="h-full w-full cursor-pointer border-0 object-cover pointer-events-none"
+                  className="h-full w-full border-0 object-cover"
                 />
               ) : videoSrc ? (
                 <video
@@ -583,7 +583,7 @@ function ProjectRow({
                   loop
                   playsInline
                   preload="metadata"
-                  className="h-full w-full cursor-pointer object-cover pointer-events-none"
+                  className="h-full w-full object-cover"
                 />
               ) : (
                 <Image
