@@ -131,30 +131,26 @@ export function FooterSection({ alignWithHeader = false }: FooterSectionProps = 
         background: "radial-gradient(150% 150% at 0% 0%, #FEFCF8 0%, #F5F5F5 100%)"
       }}
     >
-      <div
+<div
         className="pointer-events-none absolute left-[-120px] top-[-180px] z-0 h-[878px] w-[878px] rounded-[878px]"
         style={{
           background: "#FFF9E4",
           filter: "blur(400px)",
         }}
-      />
-
+      />      
       {/* Top Section — optional shell aligned with contact hero header (1480/1520) */}
       <div className={topOuter}>
         <div className={topInner}>
           <div className="flex flex-col gap-10 sm:gap-12 md:flex-row md:flex-wrap md:items-start md:justify-between md:gap-x-8 md:gap-y-10 lg:flex-nowrap lg:items-center lg:gap-8">
-
           {/* Left: Text and Contact */}
           <div className="flex flex-col items-center gap-8 text-center sm:gap-10 md:w-[min(100%,calc(50%-1rem))] md:items-center lg:w-1/3 lg:items-start lg:gap-12 lg:text-left">
             <h2
               data-scroll-reveal
               className={`${quattrocento.className} text-[28px] font-normal uppercase leading-[33px] md:leading-[40px] lg:leading-[50px] text-[#1A1A1A] sm:text-[32px] md:text-[36px] lg:text-[40px] xl:text-[36px]`}
             >
-              Our Emails Are Crafted With
+              Our Emails Are Crafted With 
               <br />
               Highest Standards!
-
-
             </h2>
 
             <div className="flex flex-col gap-6">

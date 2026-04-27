@@ -368,7 +368,7 @@ export function NavOverlay({ isOpen, onClose }: NavOverlayProps) {
                       className="font-lato text-xl font-semibold sm:text-2xl"
                       style={{ color: "#F5AC00" }}
                     >
-                      0120-4491800
+                      +91 783 870 0316
                     </a>
                   </div>
                 </div>
