@@ -57,7 +57,7 @@ const showcaseSlides = [
         description: (
             <>
                 The Forest Walk in <strong>Ghaziabad</strong> is an exclusive gated villa community that
-                blends urban luxury with nature. With only <strong>97 villas</strong>, large{" "}
+                blends urban luxury with nature. With under <strong>400 residences</strong>, large{" "}
                 <strong>green spaces</strong> and a <strong>forest trail</strong>, it offers easy
                 connectivity to Delhi and Noida via <strong>NH-24</strong>.
             </>
