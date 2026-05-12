@@ -44,7 +44,7 @@ export function NriCornerHeader() {
               >
                 {isScrolled ? (
                   <Image
-                    src="/assets/sanskar_logo.png"
+                    src="/assets/Sanskar-New-Logo.png"
                     alt="Sanskar Realty logo"
                     title="Sanskar Realty — Home"
                     width={153}

@@ -223,10 +223,10 @@ export function HeroSection({ startIntroAnimation = false }: HeroSectionProps) {
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
               <Image
-                src="/assets/sanskar_logo.png"
+                src="/assets/Sanskar-New-Logo.png"
                 alt="Sanskar Realty logo"
-                width={153}
-                height={50}
+                width={183}
+                height={90}
                 priority
                 quality={100}
                 className={`w-auto object-contain transition-all duration-300 ease-out ${
