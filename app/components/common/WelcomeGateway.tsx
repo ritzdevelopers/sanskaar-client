@@ -4,7 +4,7 @@ import { gsap } from "gsap";
 import Image from "next/image";
 import { useLayoutEffect, useRef, useState } from "react";
 
-const VENTURE_LINE = "Reality";
+const VENTURE_LINE = "Realty";
 
 type WelcomeGatewayProps = {
   onComplete?: () => void;
@@ -120,11 +120,12 @@ export function WelcomeGateway({ onComplete }: WelcomeGatewayProps) {
           <div className="flex min-w-0 justify-center [grid-area:stack]">
           <p
   ref={lineRef}
-  className="whitespace-nowrap text-center font-['Lato'] text-[22px] tracking-[0.12em] text-white sm:text-[24px] sm:tracking-[25px] md:text-[28px] lg:text-[32px] xl:text-[36px]"
+  className="whitespace-nowrap text-center font-['Lato'] text-[22px] tracking-[0.12em] text-white sm:text-[24px] sm:tracking-[25px] md:text-[28px] lg:text-[32px] xl:text-[36px] uppercase"
 >
   {typedText}
-  
-  <span className="ml-1 inline-block h-[26px] w-[1px] animate-pulse bg-white align-middle sm:h-[28px] md:h-[32px] lg:h-[36px] xl:h-[40px]" />
+  {typedText.length < VENTURE_LINE.length && (
+    <span className="ml-1 inline-block h-[26px] w-[1px] animate-pulse bg-white align-middle sm:h-[28px] md:h-[32px] lg:h-[36px] xl:h-[40px]" />
+  )}
 </p>
           </div>
         </div>
