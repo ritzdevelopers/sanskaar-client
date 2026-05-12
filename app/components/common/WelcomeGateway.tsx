@@ -4,7 +4,7 @@ import { gsap } from "gsap";
 import Image from "next/image";
 import { useLayoutEffect, useRef, useState } from "react";
 
-const VENTURE_LINE = "A VENTURE OF YATHARTH GROUP";
+const VENTURE_LINE = "Reality";
 
 type WelcomeGatewayProps = {
   onComplete?: () => void;
@@ -16,8 +16,6 @@ export function WelcomeGateway({ onComplete }: WelcomeGatewayProps) {
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const logoRef = useRef<HTMLDivElement | null>(null);
   const lineRef = useRef<HTMLParagraphElement | null>(null);
-  const topGoldRef = useRef<HTMLSpanElement | null>(null);
-  const bottomGoldRef = useRef<HTMLSpanElement | null>(null);
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
 
@@ -25,12 +23,10 @@ export function WelcomeGateway({ onComplete }: WelcomeGatewayProps) {
     const overlay = overlayRef.current;
     const logo = logoRef.current;
     const line = lineRef.current;
-    const topGold = topGoldRef.current;
-    const bottomGold = bottomGoldRef.current;
 
-    if (!overlay || !logo || !line || !topGold || !bottomGold) return;
+    if (!overlay || !logo || !line) return;
 
-    gsap.killTweensOf([overlay, logo, line, topGold, bottomGold]);
+    gsap.killTweensOf([overlay, logo, line]);
 
     let typingTimeout: ReturnType<typeof setTimeout> | undefined;
     let hideTimeout: ReturnType<typeof setTimeout> | undefined;
@@ -40,11 +36,6 @@ export function WelcomeGateway({ onComplete }: WelcomeGatewayProps) {
     const typeNextChar = () => {
       if (cancelled) return;
       if (charIndex >= VENTURE_LINE.length) {
-        gsap.to(bottomGold, {
-          scaleX: 1,
-          duration: 1.05,
-          ease: "power2.inOut",
-        });
         hideTimeout = setTimeout(() => {
           if (cancelled) return;
           gsap.to(overlay, {
@@ -69,11 +60,6 @@ export function WelcomeGateway({ onComplete }: WelcomeGatewayProps) {
       gsap.set(overlay, { autoAlpha: 1 });
       gsap.set(logo, { autoAlpha: 0, y: 32, scale: 0.95 });
       gsap.set(line, { autoAlpha: 0, y: 8 });
-      gsap.set([topGold, bottomGold], {
-        scaleX: 0,
-        transformOrigin: "50% 50%",
-        force3D: true,
-      });
 
       const tl = gsap.timeline();
 
@@ -83,18 +69,9 @@ export function WelcomeGateway({ onComplete }: WelcomeGatewayProps) {
         { autoAlpha: 1, y: 0, scale: 1, duration: 1.2, ease: "power3.out" }
       )
         .to(
-          topGold,
-          {
-            scaleX: 1,
-            duration: 1.05,
-            ease: "power2.inOut",
-          },
-          "-=0.15"
-        )
-        .to(
           line,
           { autoAlpha: 1, y: 0, duration: 0.55, ease: "power2.out" },
-          "<0.45"
+          "+=0.3"
         )
         .call(
           () => {
@@ -120,7 +97,7 @@ export function WelcomeGateway({ onComplete }: WelcomeGatewayProps) {
       <div className="flex w-full max-w-[min(100%,520px)] flex-col items-center gap-4 text-center sm:max-w-none sm:gap-6 md:gap-8">
         <div ref={logoRef} className="w-full px-2">
           <Image
-            src="/assets/sanskar_logo_white.png"
+            src="/assets/sanskar-new.png"
             alt="Sanskar Realty"
             width={520}
             height={158}
@@ -131,37 +108,24 @@ export function WelcomeGateway({ onComplete }: WelcomeGatewayProps) {
           />
         </div>
 
-        {/* Golden lines match full sentence width (invisible layer reserves width while typing) */}
-        <div className="grid w-full max-w-[min(100%,calc(100vw-2rem))] overflow-x-auto [grid-template-areas:'stack'] place-items-stretch sm:w-max sm:max-w-[min(100%,calc(100vw-3rem))] md:overflow-visible">
+        <div className="-mt-4 grid w-full max-w-[min(100%,calc(100vw-2rem))] overflow-x-auto [grid-template-areas:'stack'] place-items-stretch sm:w-max sm:max-w-[min(100%,calc(100vw-3rem))] md:-mt-3 md:overflow-visible">
           <div
-            className="invisible pointer-events-none flex min-w-0 flex-col gap-3 [grid-area:stack]"
+            className="invisible pointer-events-none flex min-w-0 justify-center [grid-area:stack]"
             aria-hidden
           >
-            <span className="block h-px w-full shrink-0 bg-transparent" />
-            <p className="whitespace-nowrap text-center font-['Lato'] text-[10px] tracking-[0.12em] sm:text-[12px] sm:tracking-[0.18em] md:text-[13px] lg:text-[14px] xl:text-[15px]">
+            <p className="whitespace-nowrap text-center font-['Lato'] text-[22px] tracking-[0.12em] sm:text-[24px] sm:tracking-[0.18em] md:text-[28px] lg:text-[32px] xl:text-[36px]">
               {VENTURE_LINE}
-              <span className="ml-1 inline-block h-[14px] w-[1px]" />
             </p>
-            <span className="block h-px w-full shrink-0 bg-transparent" />
           </div>
-          <div className="flex min-w-0 flex-col gap-3 [grid-area:stack]">
-            <span
-              ref={topGoldRef}
-              className="block h-px w-full origin-center bg-[#D4AF37] will-change-transform"
-              aria-hidden
-            />
-            <p
-              ref={lineRef}
-              className="whitespace-nowrap text-center font-['Lato'] text-[10px] tracking-[0.12em] text-white sm:text-[12px] sm:tracking-[0.18em] md:text-[13px] lg:text-[14px] xl:text-[15px]"
-            >
-              {typedText}
-              <span className="ml-1 inline-block h-[14px] w-[1px] animate-pulse bg-white align-[-2px]" />
-            </p>
-            <span
-              ref={bottomGoldRef}
-              className="block h-px w-full origin-center bg-[#D4AF37] will-change-transform"
-              aria-hidden
-            />
+          <div className="flex min-w-0 justify-center [grid-area:stack]">
+          <p
+  ref={lineRef}
+  className="whitespace-nowrap text-center font-['Lato'] text-[22px] tracking-[0.12em] text-white sm:text-[24px] sm:tracking-[25px] md:text-[28px] lg:text-[32px] xl:text-[36px]"
+>
+  {typedText}
+  
+  <span className="ml-1 inline-block h-[26px] w-[1px] animate-pulse bg-white align-middle sm:h-[28px] md:h-[32px] lg:h-[36px] xl:h-[40px]" />
+</p>
           </div>
         </div>
       </div>

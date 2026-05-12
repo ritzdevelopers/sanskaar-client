@@ -303,7 +303,7 @@ export function ContactFormSection() {
                 className="flex min-w-0 shrink cursor-pointer items-center py-0.5"
               >
                 <Image
-                  src="/assets/sanskar_logo.png"
+                  src="/assets/Sanskar-New-Logo.png"
                   alt="Sanskar Realty logo"
                   title="Sanskar Realty — Home"
                   width={153}
