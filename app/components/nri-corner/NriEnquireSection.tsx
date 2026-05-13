@@ -133,7 +133,7 @@ async function submitNriLeadToFourQt(payload: {
     Project: "",
     Remark: `NRI enquiry — ${pageLoc}. ${msgShort}`,
     url: fourQtUrlHostPath(href),
-    UniqueId: String(Date.now()),
+    UniqueId: "0",
     fld1: qs.get("utm_source") ?? "",
     fld2: qs.get("utm_campaign") ?? "",
     fld3: qs.get("utm_medium") ?? "",

@@ -113,7 +113,7 @@ async function submitBrochureLeadToFourQt({ name, email, mobile, project }) {
     Project: projectLabel,
     Remark: `Brochure download — ${projectLabel}`,
     url: brochureLeadUrlHostPath(href),
-    UniqueId: String(Date.now()),
+    UniqueId: "0",
     fld1: query.get("utm_source") ?? "",
     fld2: query.get("utm_campaign") ?? "",
     fld3: query.get("utm_medium") ?? "",

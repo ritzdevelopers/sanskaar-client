@@ -102,7 +102,7 @@ async function submitWorkWithUsLeadToFourQt({
     Project: "Sanskar Website",
     Remark: `Work with us — ${teamLbl}. Resume: ${resumeFileName}`,
     url: fourQtUrlHostPath(href),
-    UniqueId: String(Date.now()),
+    UniqueId: "0",
     fld1: query.get("utm_source") ?? "",
     fld2: query.get("utm_campaign") ?? "",
     fld3: query.get("utm_medium") ?? "",

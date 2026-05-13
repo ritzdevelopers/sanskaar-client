@@ -121,7 +121,7 @@ async function submitContactLeadToFourQt({
     Project: "",
     Remark: `Contact form — ${pageLoc}. ${remarkBody}`,
     url: fourQtUrlHostPath(href),
-    UniqueId: String(Date.now()),
+    UniqueId: "0",
     fld1: qs.get("utm_source") ?? "",
     fld2: qs.get("utm_campaign") ?? "",
     fld3: qs.get("utm_medium") ?? "",

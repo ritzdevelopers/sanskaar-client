@@ -105,7 +105,7 @@ async function submitLeadToFourQt(payload: {
   const currentPath = typeof window !== "undefined" ? window.location.pathname : "";
   const query = typeof window !== "undefined" ? window.location.search : "";
   const qs = new URLSearchParams(query);
-  const uniqueId = `${Date.now()}`;
+  const UniqueId = "0";
   const pageLabel = payload.sourcePage || pageLabelFromPath(currentPath);
   const projectLabel = normalizeProjectName(payload.projectName, currentPath);
   const requestParams = new URLSearchParams({
@@ -124,7 +124,7 @@ async function submitLeadToFourQt(payload: {
       ? `Enquiry from ${pageLabel} for ${projectLabel}`
       : `Enquiry from ${pageLabel} callback form`,
     url: urlWithoutProtocolAndQuery(currentHref),
-    UniqueId: uniqueId,
+    UniqueId: UniqueId,
     fld1: qs.get("utm_source") ?? "",
     fld2: qs.get("utm_campaign") ?? "",
     fld3: qs.get("utm_medium") ?? "",
