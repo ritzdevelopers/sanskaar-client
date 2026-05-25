@@ -243,7 +243,7 @@ export function FooterSection({ alignWithHeader = false }: FooterSectionProps = 
               onClick={() => {
                 void submitFooterEmail();
               }}
-              className={`${lato.className} w-full bg-[#111111] py-4 text-[16px] text-white transition-colors hover:bg-[#333333] disabled:cursor-not-allowed disabled:opacity-60`}
+              className={`${lato.className} w-full cursor-pointer bg-[#111111] py-4 text-[16px] text-white transition-colors hover:bg-[#333333] disabled:cursor-not-allowed disabled:opacity-60`}
             >
               {isSubmittingEmail ? "Submitting…" : "Submit"}
             </button>
