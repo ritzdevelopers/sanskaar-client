@@ -49,7 +49,7 @@ export default function CarrerPage() {
     >
       <Carrerbanner />
       <Carrerform />
-      <Vaccancy />
+      {/* <Vaccancy /> */}
       <DreamHome />
       <Testimonial />
       <Prrelease />
