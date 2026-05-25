@@ -49,6 +49,8 @@ type FooterSectionProps = {
 
 export function FooterSection({ alignWithHeader = false }: FooterSectionProps = {}) {
   const pathname = usePathname() ?? "";
+  const contactEmail =
+    pathname === "/carrer" ? "hr@sanskarrealty.co.in" : "info@sanskarrealty.co.in";
   const { openEnquireModal } = useEnquireModal();
   const { openWorkWithUsModal } = useWorkWithUsModal();
   const { openSiteVisitModal } = useSiteVisitModal();
@@ -184,10 +186,10 @@ export function FooterSection({ alignWithHeader = false }: FooterSectionProps = 
                 </span>
                 <a
                   data-scroll-reveal
-                  href="mailto:info@sanskarrealty.co.in"
+                  href={`mailto:${contactEmail}`}
                   className={`${lato.className} text-[15px] text-[#555555] hover:text-[#1A1A1A] sm:text-[16px] md:text-[18px] break-all sm:break-normal`}
                 >
-                  info@sanskarrealty.co.in
+                  {contactEmail}
                 </a>
               </div>
             </div>
