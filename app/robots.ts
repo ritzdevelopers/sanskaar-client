@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+  "https://www.sanskarrealty.co.in"
 ).replace(/\/$/, "");
 
 export default function robots(): MetadataRoute.Robots {
