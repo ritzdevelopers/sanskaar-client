@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { EnquireModalProvider } from "./components/common/EnquireModalProvider";
 import { SiteVisitModalProvider } from "./components/common/SiteVisitModalProvider";
 import { WorkWithUsModalProvider } from "./components/common/WorkWithUsModalProvider";
@@ -20,6 +21,9 @@ export const metadata: Metadata = {
   icons: {
     icon: "/assets/sankar_favicon.png",
   },
+  verification: {
+    google: "VibyxJ5f3UQQlcKNxVNcL3Tl7M5OpIvzPKBgvqbAi3k",
+  },
 };
 
 export default function RootLayout({
@@ -29,6 +33,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-13RSCDVFE1"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-13RSCDVFE1');
+          `}
+        </Script>
+      </head>
       <body className="min-h-full bg-white antialiased" suppressHydrationWarning>
         <SmoothScrollProvider>
           <EnquireModalProvider>
