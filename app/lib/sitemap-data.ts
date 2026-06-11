@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
 
-import { API_BASE } from "./dashboard/lib";
+import { API_BASE } from "../dashboard/lib";
 
-const SITE_URL = (
+export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
 ).replace(/\/$/, "");
 
@@ -64,7 +64,6 @@ async function fetchAllBlogUrls(): Promise<MetadataRoute.Sitemap> {
   while (true) {
     const res = await fetch(
       `${API_BASE}/api/users/get-blog-data?page=${page}&limit=${limit}`,
-      { next: { revalidate: 3600 } },
     );
 
     if (!res.ok) break;
@@ -100,7 +99,46 @@ async function fetchAllBlogUrls(): Promise<MetadataRoute.Sitemap> {
   return entries;
 }
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
   const blogUrls = await fetchAllBlogUrls();
   return [...STATIC_PAGES, ...blogUrls];
+}
+
+function escapeXml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+export function buildSitemapXml(entries: MetadataRoute.Sitemap): string {
+  const urlNodes = entries
+    .map((entry) => {
+      const loc = escapeXml(String(entry.url));
+      const lastMod =
+        entry.lastModified instanceof Date
+          ? entry.lastModified.toISOString()
+          : entry.lastModified
+            ? new Date(entry.lastModified).toISOString()
+            : null;
+      const changeFreq = entry.changeFrequency
+        ? `<changefreq>${escapeXml(entry.changeFrequency)}</changefreq>`
+        : "";
+      const priority =
+        typeof entry.priority === "number"
+          ? `<priority>${entry.priority.toFixed(1)}</priority>`
+          : "";
+
+      return `  <url>
+    <loc>${loc}</loc>${lastMod ? `\n    <lastmod>${lastMod}</lastmod>` : ""}${changeFreq ? `\n    ${changeFreq}` : ""}${priority ? `\n    ${priority}` : ""}
+  </url>`;
+    })
+    .join("\n");
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urlNodes}
+</urlset>`;
 }
